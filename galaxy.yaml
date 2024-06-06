@@ -1,0 +1,14 @@
+---
+namespace: compscidr
+name: github_cli
+authors:
+    - Jason Ernst <ernstjason1@gmail.com>
+description: Installs github CLI and gh extensions
+license_file: LICENSE
+readme: README.md
+version: 0.0.1
+repository: https://github.com/compscidr/ansible-github-cli
+tags:
+    - github
+    - cli
+    - extensions

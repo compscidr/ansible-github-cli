@@ -1,0 +1,18 @@
+galaxy_info:
+  author: Jason Ernst
+  role_name: github_cli
+  description: Installs github cli (gh)
+  company: 
+  license: GPLv3
+  min_ansible_version: 2.4
+  readme: roles/github_cli/README.md
+  platforms:
+    - name: Ubuntu
+      versions:
+        - bionic # 18.04 LTS
+        - focal  # 20.04 LTS
+        - jammy  # 22.04 LTS
+        - noble  # 24.04 LTS
+  galaxy_tags:
+    - github
+    - cli

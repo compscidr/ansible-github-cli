@@ -1,0 +1,25 @@
+- name: Install gh apt keys
+  tags: gh
+  become: true
+  ansible.builtin.apt_key:
+    url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
+    id: 2C6106201985B60E6C7AC87323F3D4EA75716059
+    state: present
+    keyring: /etc/apt/trusted.gpg.d/gh.gpg
+
+- name: Install gh repo
+  tags: gh
+  become: true
+  ansible.builtin.apt_repository:
+    repo: >
+      deb [arch={{ [ansible_architecture] | map('extract', deb_architecture) | first }}]
+      https://cli.github.com/packages stable main
+    state: present
+
+- name: Install gh
+  tags: gh
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    name: gh
+    state: present
