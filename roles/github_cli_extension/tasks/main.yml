@@ -1,0 +1,15 @@
+---
+- name: Determine if the extension is present
+  tags: gh
+  ansible.builtin.shell: "gh extension list | grep {{ github_cli_extension }}"
+  environment:
+    GH_TOKEN: "{{ github_cli_gh_token }}"
+  register: extension_result
+  ignore_errors: true
+
+- name: Install the extension
+  tags: gh
+  ansible.builtin.shell: "gh extension install {{ github_cli_extension }}"
+  environment:
+    GH_TOKEN: "{{ github_cli_gh_token }}"
+  when: extension_result.rc != 0
