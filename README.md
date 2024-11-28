@@ -1,4 +1,8 @@
 # ansible-github-cli
+[![Static Badge](https://img.shields.io/badge/Ansible_galaxy-Download-blue)](https://galaxy.ansible.com/ui/repo/published/compscidr/github_cli/)
+[![ansible lint](https://github.com/compscidr/ansible-github-cli/actions/workflows/check.yml/badge.svg)](https://github.com/compscidr/ansible-github-cli/actions/workflows/check.yml)
+[![ansible lint rules](https://img.shields.io/badge/Ansible--lint-rules%20table-blue.svg)](https://ansible.readthedocs.io/projects/lint/rules/)
+
 A collection of roles to:
 - install github cli
 - install gh extensions
