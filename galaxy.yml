@@ -6,9 +6,10 @@ authors:
 description: Installs github CLI and gh extensions
 license_file: LICENSE
 readme: README.md
-version: 0.0.3
+version: 0.0.4
 repository: https://github.com/compscidr/ansible-github-cli
 tags:
     - github
     - cli
     - extensions
+    - tools
