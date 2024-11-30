@@ -1,0 +1,8 @@
+# https://stackoverflow.com/questions/58169348/how-is-the-architecture-fact-called-in-ansible/73096785#73096785
+github_cli_deb_architecture: {
+    "armv6l": "armhf",
+    "armv7l": "armhf",
+    "aarch64": "arm64",
+    "x86_64": "amd64",
+    "i386": "i386"
+}

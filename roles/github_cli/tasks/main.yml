@@ -20,7 +20,7 @@
   become: true
   ansible.builtin.apt_repository:
     repo: >
-      deb [arch={{ [ansible_architecture] | map('extract', deb_architecture) | first }}]
+      deb [arch={{ [ansible_architecture] | map('extract', github_cli_deb_architecture) | first }}]
       https://cli.github.com/packages stable main
     state: present
 
