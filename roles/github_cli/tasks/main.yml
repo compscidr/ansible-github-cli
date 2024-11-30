@@ -1,10 +1,12 @@
 # bashrc updates GH_TOKEN
-- name: Update bashrc GH_TOKEN
+- name: Set GH_TOKEN environment
+  become: true
   tags: gh
-  ansible.builtin.lineinfile:
-    dest: "/home/{{ username }}/.bashrc"
-    owner: "{{ github_cli_user }}"
-    line: "export GH_TOKEN={{ github_cli_gh_token }}"
+  ansible.builtin.copy:
+    dest: "/etc/environment.d/90-gh.conf"
+    content: "GH_TOKEN={{ github_cli_gh_token }}"
+    mode: "644"
+  when: github_cli_gh_token != "insert_your_token"
 
 - name: Install gh apt keys
   tags: gh

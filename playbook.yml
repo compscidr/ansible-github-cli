@@ -1,0 +1,9 @@
+- name: Install gh and extensions
+  hosts: all
+  roles:
+    - role: github_cli
+      vars:
+        github_cli_gh_token: "{{ lookup('community.general.onepassword', 'GH CLI token', field='credential', vault='Infrastructure') }}"
+    - role: github_cli_extension
+      vars:
+        github_cli_extension_name: "dlvhdr/gh-dash"

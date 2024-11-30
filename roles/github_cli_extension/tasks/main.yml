@@ -1,14 +1,27 @@
 ---
+# we have to do this because there's no good way to make the change to /etc/environment.d
+# take effect other than rebooting that I'm aware of
+- name: Populate GH_TOKEN fact
+  tags: gh
+  ansible.builtin.shell: . /etc/environment.d/90-gh.conf && echo $GH_TOKEN
+  register: gh_token_result
+  changed_when: false
+
 - name: Determine if the extension is present
   tags: gh
-  ansible.builtin.command: "gh extension list | grep {{ github_cli_extension_name }}"
+  # we must use shell because of the pipe operation
+  ansible.builtin.shell: "gh extension list | grep {{ github_cli_extension_name }}"
+  environment:
+    GH_TOKEN: "{{ gh_token_result.stdout }}"
   register: extension_result
   ignore_errors: true
-  changed_when: "'changed' in extension_result.stdout"
+  changed_when: false
 
 - name: Install the extension
   tags: gh
   ansible.builtin.command: "gh extension install {{ github_cli_extension_name }}"
+  environment:
+    GH_TOKEN: "{{ gh_token_result.stdout }}"
   when: extension_result.rc != 0
   register: extension_install_result
   changed_when: "'changed' in extension_install_result.stdout"

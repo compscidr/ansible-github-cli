@@ -8,3 +8,5 @@ with different variable values.
 Variable                                | Description
 --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 github_cli_extension                    | The extension to install
+
+Note, this will fail if GH_TOKEN env variable is not defined.
