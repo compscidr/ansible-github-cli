@@ -31,13 +31,9 @@ Use in a playbook:
         github_cli_user: "insert your username"
     - role: compscidr.github_cli.github_cli_extension
       vars:
-        github_cli_gh_token: "insert your gh token"
-        github_cli_user: "insert your username"
         github_cli_extension: "dlvhdr/gh-dash"
     - role: compscidr.github_cli.github_cli_extension
       vars:
-        github_cli_gh_token: "insert your gh token"
-        github_cli_user: "insert your username"
         github_cli_extension: "some other extension"
 ```
 
