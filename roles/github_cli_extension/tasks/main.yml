@@ -2,8 +2,6 @@
 - name: Determine if the extension is present
   tags: gh
   ansible.builtin.command: "gh extension list | grep {{ github_cli_extension_name }}"
-  environment:
-    GH_TOKEN: "{{ github_cli_gh_token }}"
   register: extension_result
   ignore_errors: true
   changed_when: "'changed' in extension_result.stdout"
@@ -11,8 +9,6 @@
 - name: Install the extension
   tags: gh
   ansible.builtin.command: "gh extension install {{ github_cli_extension_name }}"
-  environment:
-    GH_TOKEN: "{{ github_cli_gh_token }}"
   when: extension_result.rc != 0
   register: extension_install_result
   changed_when: "'changed' in extension_install_result.stdout"
