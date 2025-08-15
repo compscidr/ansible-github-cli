@@ -8,9 +8,9 @@
       vars:
         github_cli_gh_token: "test_token"
         github_cli_user: "test_user"
-    
+
     - name: Include github_cli_extension role
       ansible.builtin.include_role:
         name: github_cli_extension
       vars:
-        github_cli_extension: "dlvhdr/gh-dash"
+        github_cli_extension_: "dlvhdr/gh-dash"
