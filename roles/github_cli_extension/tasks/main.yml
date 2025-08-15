@@ -4,7 +4,7 @@
 - name: Populate GH_TOKEN fact
   tags: gh
   ansible.builtin.shell: . /etc/environment.d/90-gh.conf && echo $GH_TOKEN
-  register: gh_token_result
+  register: github_cli_extension_gh_token_result
   changed_when: false
 
 - name: Determine if the extension is present
@@ -12,8 +12,8 @@
   # we must use shell because of the pipe operation
   ansible.builtin.shell: "gh extension list | grep {{ github_cli_extension_name }}"
   environment:
-    GH_TOKEN: "{{ gh_token_result.stdout }}"
-  register: extension_result
+    GH_TOKEN: "{{ github_cli_extension_gh_token_result.stdout }}"
+  register: github_cli_extension_extension_result
   ignore_errors: true
   changed_when: false
 
@@ -21,7 +21,7 @@
   tags: gh
   ansible.builtin.command: "gh extension install {{ github_cli_extension_name }}"
   environment:
-    GH_TOKEN: "{{ gh_token_result.stdout }}"
-  when: extension_result.rc != 0
-  register: extension_install_result
-  changed_when: "'changed' in extension_install_result.stdout"
+    GH_TOKEN: "{{ github_cli_extension_gh_token_result.stdout }}"
+  when: github_cli_extension_extension_result.rc != 0
+  register: github_cli_extension_extension_install_result
+  changed_when: "'changed' in github_cli_extension_extension_install_result.stdout"
