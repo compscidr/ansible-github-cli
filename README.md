@@ -50,3 +50,12 @@ So that you don't need to push and make a release every time:
 ansible-galaxy collection build --force
 ansible-galaxy collection install *tar.gz --force
 ```
+
+## Testing molecule locally
+Inside the ansible directory:
+```
+python -m venv venv
+. venv/bin/activate
+pip install molecule molecule-docker passlib
+molecule test
+```
