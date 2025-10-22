@@ -2,15 +2,15 @@
 - name: Populate GH_TOKEN fact
   tags: gh
   become: true
-  become_user: "{{ github_cli_user }}"
-  ansible.builtin.shell: . /home/{{ github_cli_user }}/.bashrc && echo $GH_TOKEN
+  become_user: "{{ github_cli_user | default(ansible_user) }}"
+  ansible.builtin.shell: . /home/{{ github_cli_user | default(ansible_user) }}/.bashrc && echo $GH_TOKEN
   register: github_cli_extension_gh_token_result
   changed_when: false
 
 - name: Determine if the extension is present
   tags: gh
   become: true
-  become_user: "{{ github_cli_user }}"
+  become_user: "{{ github_cli_user | default(ansible_user) }}"
   # we must use shell because of the pipe operation
   ansible.builtin.shell: "gh extension list | grep {{ github_cli_extension_name }}"
   environment:
@@ -22,7 +22,7 @@
 - name: Install the extension
   tags: gh
   become: true
-  become_user: "{{ github_cli_user }}"
+  become_user: "{{ github_cli_user | default(ansible_user) }}"
   ansible.builtin.command: "gh extension install {{ github_cli_extension_name }}"
   environment:
     GH_TOKEN: "{{ github_cli_extension_gh_token_result.stdout }}"

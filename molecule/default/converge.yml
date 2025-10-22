@@ -2,12 +2,12 @@
 - name: Converge
   hosts: all
   become: true
+  vars:
+    github_cli_user: "root"
   roles:
     - role: github_cli
       vars:
         github_cli_gh_token: "test_token"
-        github_cli_user: "root"
     - role: github_cli_extension
       vars:
         github_cli_extension_name: "dlvhdr/gh-dash"
-        github_cli_user: "root"

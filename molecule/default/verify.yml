@@ -28,8 +28,11 @@
       failed_when: gh_token_bashrc.rc != 0
 
     - name: Verify gh extension is installed
+      become: true
       become_user: root
-      ansible.builtin.shell: gh extension list | grep gh-dash
+      ansible.builtin.shell: set -o pipefail && gh extension list | grep gh-dash
+      args:
+        executable: /bin/bash
       environment:
         GH_TOKEN: "test_token"
       register: gh_extension_result

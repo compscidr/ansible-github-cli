@@ -1,9 +1,9 @@
 - name: Set GH_TOKEN in .bashrc
   become: true
-  become_user: "{{ github_cli_user }}"
+  become_user: "{{ github_cli_user | default(ansible_user) }}"
   tags: gh
   ansible.builtin.lineinfile:
-    path: "/home/{{ github_cli_user }}/.bashrc"
+    path: "/home/{{ github_cli_user | default(ansible_user) }}/.bashrc"
     line: "export GH_TOKEN={{ github_cli_gh_token }}"
     regexp: "^export GH_TOKEN="
     state: present
