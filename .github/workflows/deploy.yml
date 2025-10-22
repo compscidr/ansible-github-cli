@@ -24,7 +24,8 @@ jobs:
         run: ansible-galaxy collection build
 
       - name: Publish collection to Galaxy
-        run: ansible-galaxy collection publish *.tar.gz --api-key ${{ secrets.galaxy_api_key }}
+        run: ansible-galaxy collection publish *.tar.gz
         env:
+          ANSIBLE_GALAXY_API_KEY: ${{ secrets.galaxy_api_key }}
           ANSIBLE_GALAXY_SERVER_LIST: release_galaxy
           ANSIBLE_GALAXY_SERVER_RELEASE_GALAXY_URL: https://galaxy.ansible.com/
