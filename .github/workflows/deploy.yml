@@ -5,13 +5,26 @@ on:
 
 jobs:
   build:
-    name: Galaxy Role Importer
+    name: Galaxy Collection Importer
     runs-on: ubuntu-latest
 
     steps:
       - name: 'Checkout git repo'
         uses: actions/checkout@v5
-      - name: 'Release on galaxy'
-        uses: ansible-actions/ansible-galaxy-action@v1.2.0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          galaxy_api_key: ${{ secrets.galaxy_api_key }}
+          python-version: '3.x'
+
+      - name: Install ansible-core
+        run: pip install ansible-core
+
+      - name: Build collection
+        run: ansible-galaxy collection build
+
+      - name: Publish collection to Galaxy
+        run: ansible-galaxy collection publish *.tar.gz --api-key ${{ secrets.galaxy_api_key }}
+        env:
+          ANSIBLE_GALAXY_SERVER_LIST: release_galaxy
+          ANSIBLE_GALAXY_SERVER_RELEASE_GALAXY_URL: https://galaxy.ansible.com/
