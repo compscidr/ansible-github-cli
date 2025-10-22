@@ -1,0 +1,10 @@
+---
+- name: Prepare
+  hosts: all
+  become: true
+  tasks:
+    - name: Install gnupg2
+      ansible.builtin.apt:
+        name: gnupg2
+        state: present
+        update_cache: true

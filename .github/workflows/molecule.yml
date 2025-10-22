@@ -1,0 +1,35 @@
+name: Molecule Test
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  molecule:
+    name: Molecule
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform:
+          - ubuntu-20.04
+          - ubuntu-22.04
+          - ubuntu-24.04
+
+    steps:
+      - name: Check out the codebase
+        uses: actions/checkout@v5
+
+      - name: Set up Python 3
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Molecule tests
+        run: molecule test --platform-name ${{ matrix.platform }}
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
