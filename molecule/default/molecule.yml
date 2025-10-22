@@ -4,13 +4,36 @@ dependency:
 driver:
   name: docker
 platforms:
-  - name: instance
-    image: ubuntu:20.04
+  - name: ubuntu-24.04
+    image: geerlingguy/docker-ubuntu2404-ansible:latest
+    command: ""
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    cgroupns_mode: host
+    privileged: true
+    pre_build_image: true
+  - name: ubuntu-22.04
+    image: geerlingguy/docker-ubuntu2204-ansible:latest
+    command: ""
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    cgroupns_mode: host
+    privileged: true
+    pre_build_image: true
+  - name: ubuntu-20.04
+    image: geerlingguy/docker-ubuntu2004-ansible:latest
+    command: ""
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    cgroupns_mode: host
+    privileged: true
     pre_build_image: true
 provisioner:
   name: ansible
-  config_options:
-    defaults:
-      allow_broken_conditionals: true
+  env:
+    ANSIBLE_ROLES_PATH: ${MOLECULE_PROJECT_DIRECTORY}/..
+  playbooks:
+    converge: converge.yml
+    verify: verify.yml
 verifier:
   name: ansible

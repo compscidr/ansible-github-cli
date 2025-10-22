@@ -1,1 +1,2 @@
 github_cli_extension_name: insert_your_extension
+github_cli_user: "{{ ansible_user }}"

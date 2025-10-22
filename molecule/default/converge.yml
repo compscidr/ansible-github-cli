@@ -1,16 +1,13 @@
 ---
 - name: Converge
   hosts: all
-  tasks:
-    - name: Include github_cli role
-      ansible.builtin.include_role:
-        name: github_cli
+  become: true
+  roles:
+    - role: github_cli
       vars:
         github_cli_gh_token: "test_token"
-        github_cli_user: "test_user"
-
-    - name: Include github_cli_extension role
-      ansible.builtin.include_role:
-        name: github_cli_extension
+        github_cli_user: "root"
+    - role: github_cli_extension
       vars:
-        github_cli_extension_: "dlvhdr/gh-dash"
+        github_cli_extension_name: "dlvhdr/gh-dash"
+        github_cli_user: "root"
