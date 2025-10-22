@@ -36,7 +36,7 @@
 
     - name: Verify gh extension is installed
       become: true
-      become_user: root
+      become_user: "{{ github_cli_user }}"
       ansible.builtin.shell: set -o pipefail && gh extension list | grep gh-dash
       args:
         executable: /bin/bash
