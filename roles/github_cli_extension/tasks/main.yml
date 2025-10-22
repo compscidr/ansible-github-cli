@@ -1,9 +1,15 @@
 ---
+- name: Get user home directory
+  tags: gh
+  ansible.builtin.getent:
+    database: passwd
+    key: "{{ github_cli_user | default(ansible_user) }}"
+
 - name: Populate GH_TOKEN fact
   tags: gh
   become: true
   become_user: "{{ github_cli_user | default(ansible_user) }}"
-  ansible.builtin.shell: . /home/{{ github_cli_user | default(ansible_user) }}/.bashrc && echo $GH_TOKEN
+  ansible.builtin.shell: . {{ getent_passwd[github_cli_user | default(ansible_user)][5] }}/.bashrc && echo $GH_TOKEN
   register: github_cli_extension_gh_token_result
   changed_when: false
 

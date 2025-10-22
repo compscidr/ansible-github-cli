@@ -3,7 +3,14 @@
   hosts: all
   gather_facts: false
   become: true
+  vars:
+    github_cli_user: root
   tasks:
+    - name: Get user home directory
+      ansible.builtin.getent:
+        database: passwd
+        key: "{{ github_cli_user }}"
+
     - name: Verify gh binary exists
       ansible.builtin.stat:
         path: /usr/bin/gh
@@ -22,7 +29,7 @@
       changed_when: false
 
     - name: Verify GH_TOKEN is set in .bashrc
-      ansible.builtin.command: grep "export GH_TOKEN=" /root/.bashrc
+      ansible.builtin.command: grep "export GH_TOKEN=" {{ getent_passwd[github_cli_user][5] }}/.bashrc
       register: gh_token_bashrc
       changed_when: false
       failed_when: gh_token_bashrc.rc != 0
