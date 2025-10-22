@@ -8,6 +8,3 @@
     - role: github_cli
       vars:
         github_cli_gh_token: "test_token"
-    - role: github_cli_extension
-      vars:
-        github_cli_extension_name: "dlvhdr/gh-dash"

@@ -31,8 +31,9 @@ platforms:
 provisioner:
   name: ansible
   env:
-    ANSIBLE_ROLES_PATH: ${MOLECULE_PROJECT_DIRECTORY}/..
+    ANSIBLE_ROLES_PATH: ${MOLECULE_PROJECT_DIRECTORY}/roles
   playbooks:
+    prepare: prepare.yml
     converge: converge.yml
     verify: verify.yml
 verifier:

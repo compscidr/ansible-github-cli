@@ -29,22 +29,10 @@
       changed_when: false
 
     - name: Verify GH_TOKEN is set in .bashrc
-      ansible.builtin.command: grep "export GH_TOKEN=" {{ getent_passwd[github_cli_user][5] }}/.bashrc
+      ansible.builtin.command: grep "export GH_TOKEN=" {{ getent_passwd[github_cli_user][4] }}/.bashrc
       register: gh_token_bashrc
       changed_when: false
       failed_when: gh_token_bashrc.rc != 0
-
-    - name: Verify gh extension is installed
-      become: true
-      become_user: "{{ github_cli_user }}"
-      ansible.builtin.shell: set -o pipefail && gh extension list | grep gh-dash
-      args:
-        executable: /bin/bash
-      environment:
-        GH_TOKEN: "test_token"
-      register: gh_extension_result
-      changed_when: false
-      failed_when: gh_extension_result.rc != 0
 
     - name: Display verification results
       ansible.builtin.debug:

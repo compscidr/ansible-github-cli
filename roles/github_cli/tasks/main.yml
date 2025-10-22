@@ -10,7 +10,7 @@
   become_user: "{{ github_cli_user | default(ansible_user) }}"
   tags: gh
   ansible.builtin.lineinfile:
-    path: "{{ getent_passwd[github_cli_user | default(ansible_user)][5] }}/.bashrc"
+    path: "{{ getent_passwd[github_cli_user | default(ansible_user)][4] }}/.bashrc"
     line: "export GH_TOKEN={{ github_cli_gh_token }}"
     regexp: "^export GH_TOKEN="
     state: present
