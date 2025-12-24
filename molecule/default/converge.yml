@@ -8,3 +8,4 @@
     - role: github_cli
       vars:
         github_cli_gh_token: "test_token"
+        github_cli_username: "test_user"
