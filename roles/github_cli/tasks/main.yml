@@ -3,18 +3,37 @@
   ansible.builtin.getent:
     database: passwd
     key: "{{ github_cli_user | default(ansible_user) }}"
-  when: github_cli_gh_token != "insert_your_token"
+  when:
+    - github_cli_gh_token != "insert_your_token"
+    - github_cli_username != "insert_your_username"
 
-- name: Set GH_TOKEN in .bashrc
+- name: Create gh config directory
   become: true
   become_user: "{{ github_cli_user | default(ansible_user) }}"
   tags: gh
-  ansible.builtin.lineinfile:
-    path: "{{ getent_passwd[github_cli_user | default(ansible_user)][4] }}/.bashrc"
-    line: "export GH_TOKEN={{ github_cli_gh_token }}"
-    regexp: "^export GH_TOKEN="
-    state: present
-  when: github_cli_gh_token != "insert_your_token"
+  ansible.builtin.file:
+    path: "{{ getent_passwd[github_cli_user | default(ansible_user)][4] }}/.config/gh"
+    state: directory
+    mode: '0700'
+  when:
+    - github_cli_gh_token != "insert_your_token"
+    - github_cli_username != "insert_your_username"
+
+- name: Configure gh CLI authentication
+  become: true
+  become_user: "{{ github_cli_user | default(ansible_user) }}"
+  tags: gh
+  ansible.builtin.copy:
+    dest: "{{ getent_passwd[github_cli_user | default(ansible_user)][4] }}/.config/gh/hosts.yml"
+    content: |
+      github.com:
+        user: {{ github_cli_username }}
+        oauth_token: {{ github_cli_gh_token }}
+        git_protocol: https
+    mode: '0600'
+  when:
+    - github_cli_gh_token != "insert_your_token"
+    - github_cli_username != "insert_your_username"
 
 - name: Install gh apt keys
   tags: gh

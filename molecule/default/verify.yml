@@ -28,11 +28,23 @@
       register: gh_version_result
       changed_when: false
 
-    - name: Verify GH_TOKEN is set in .bashrc
-      ansible.builtin.command: grep "export GH_TOKEN=" {{ getent_passwd[github_cli_user][4] }}/.bashrc
-      register: gh_token_bashrc
+    - name: Verify gh config directory exists
+      ansible.builtin.stat:
+        path: "{{ getent_passwd[github_cli_user][4] }}/.config/gh"
+      register: gh_config_dir
+      failed_when: not gh_config_dir.stat.exists or not gh_config_dir.stat.isdir
+
+    - name: Verify gh hosts.yml config file exists
+      ansible.builtin.stat:
+        path: "{{ getent_passwd[github_cli_user][4] }}/.config/gh/hosts.yml"
+      register: gh_hosts_file
+      failed_when: not gh_hosts_file.stat.exists
+
+    - name: Verify gh hosts.yml contains authentication
+      ansible.builtin.command: grep "oauth_token:" {{ getent_passwd[github_cli_user][4] }}/.config/gh/hosts.yml
+      register: gh_token_config
       changed_when: false
-      failed_when: gh_token_bashrc.rc != 0
+      failed_when: gh_token_config.rc != 0
 
     - name: Display verification results
       ansible.builtin.debug:
