@@ -26,7 +26,7 @@ jobs:
           # Pinned to 3.13 because Python 3.14+ requires ansible-core >= 2.20.0
           # See requirements.txt for ansible-core version constraint
           # Can bump to '3.x' when ansible-core is upgraded to 2.20+
-          python-version: '3.13'
+          python-version: '3.14'
 
       - name: Install dependencies
         run: pip install -r requirements.txt
