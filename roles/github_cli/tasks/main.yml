@@ -35,23 +35,55 @@
     - github_cli_gh_token != "insert_your_token"
     - github_cli_username != "insert_your_username"
 
-- name: Install gh apt keys
+# apt-key is gone as of Ubuntu 26.04 (apt 3), so ansible.builtin.apt_key no longer
+# works. The key now goes in its own keyring referenced by signed-by, with the same
+# file names as GitHub's install docs, so the source never conflicts with a host
+# that configured gh by hand.
+- name: Remove legacy gh apt source and globally trusted key
   tags: gh
   become: true
-  ansible.builtin.apt_key:
-    url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
-    id: 7F38BBB59D064DBCB3D84D725612B36462313325
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    # written by the previous apt_repository task (name derived from the URL)
+    - /etc/apt/sources.list.d/cli_github_com_packages.list
+    # written by the previous apt_key task; trusted for every repo, not just gh
+    - /etc/apt/trusted.gpg.d/gh.gpg
+    - /etc/apt/trusted.gpg.d/gh.gpg~
+
+- name: Install python3-debian (required by deb822_repository)
+  tags: gh
+  become: true
+  ansible.builtin.apt:
+    name: python3-debian
     state: present
-    keyring: /etc/apt/trusted.gpg.d/gh.gpg
+    update_cache: true
+
+# force: GitHub rotates this key (see 0.0.17); get_url only reports changed when
+# the downloaded content differs.
+- name: Install gh apt key
+  tags: gh
+  become: true
+  ansible.builtin.get_url:
+    url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
+    dest: /usr/share/keyrings/githubcli-archive-keyring.gpg
+    mode: '0644'
+    force: true
 
 - name: Install gh repo
   tags: gh
   become: true
-  ansible.builtin.apt_repository:
-    repo: >
-      deb [arch={{ [ansible_architecture] | map('extract', github_cli_deb_architecture) | first }}]
-      https://cli.github.com/packages stable main
+  ansible.builtin.deb822_repository:
+    name: github-cli
     state: present
+    types: [deb]
+    uris: https://cli.github.com/packages
+    suites: [stable]
+    components: [main]
+    architectures: ["{{ [ansible_architecture] | map('extract', github_cli_deb_architecture) | first }}"]
+    signed_by: /usr/share/keyrings/githubcli-archive-keyring.gpg
+    enabled: true
 
 - name: Install gh
   tags: gh
