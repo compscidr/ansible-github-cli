@@ -1,6 +1,6 @@
 # Github CLI role
 This role will:
-- import to the gpg key to `/etc/apt/trusted.d` and verify the signature
+- install the gpg key to `/usr/share/keyrings` and reference it with `signed-by` from a deb822 source
 - add the apt repo to `/etc/apt/sources.d`
 - install the gh apt package
 - configure gh authentication using native `~/.config/gh/hosts.yml` format

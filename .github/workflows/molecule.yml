@@ -8,12 +8,15 @@ on:
 jobs:
   molecule:
     name: Molecule
-    runs-on: ubuntu-latest
+    # The 26.04 container's sudo fails PAM account checks under some hosts' AppArmor
+    # unix-chkpwd profile; the 26.04 runner is known to work for all three images.
+    runs-on: ubuntu-26.04
     strategy:
       matrix:
         platform:
           - ubuntu-22.04
           - ubuntu-24.04
+          - ubuntu-26.04
 
     steps:
       - name: Check out the codebase
