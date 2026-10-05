@@ -48,6 +48,8 @@
   loop:
     # written by the previous apt_repository task (name derived from the URL)
     - /etc/apt/sources.list.d/cli_github_com_packages.list
+    # the same file after do-release-upgrade converted it to deb822 (disabled)
+    - /etc/apt/sources.list.d/cli_github_com_packages.sources
     # written by the previous apt_key task; trusted for every repo, not just gh
     - /etc/apt/trusted.gpg.d/gh.gpg
     - /etc/apt/trusted.gpg.d/gh.gpg~
